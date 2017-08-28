@@ -1,13 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/styles.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-3.2.1.js"></script>
-    <script src="js/scripts.js"></script>
-    <title>Blackjack</title>
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <title>Play Blackjack!</title>
   </head>
   <body>
+  <div class="container">
+    <div class="playingCards fourColours|faceImages|simpleCards|inText|rotateHand">
+      <h1>Blackjack</h1>
+        <h2>Rules of Blackjack</h2>
+          <ul>
+            <li>The goal of blackjack is to beat the dealer's hand without going over 21.</li>
+            <li>Face cards are worth 10. Aces are worth 1 or 11, whichever makes a better hand.</li>
+            <li>Each player starts with two cards, one of the dealer's cards is hidden until the end.</li>
+            <li>To 'Hit' is to ask for another card. To 'Stand' is to hold your total and end your turn.</li>
+            <li>If you go over 21 you bust, and the dealer wins regardless of the dealer's hand.</li>
+            <li>If you are dealt 21 from the start (Ace & 10), you got a blackjack.</li>
+            <li>Dealer will hit until his/her cards total 17.</li>
+            <li>Doubling is like a hit, only the bet is doubled and you only get one more card.</li>
+            <li>Split can be done when you have two of the same card - the pair is split into two hands.</li>
+            <li>Splitting also doubles the bet, because each new hand is worth the original bet.</li>
+            <li>You can only double/split on the first move, or first move of a hand created by a split.</li>
+            <li>You cannot play on two aces after they are split.</li>
+            <li>You can double on a hand resulting from a split, tripling or quadrupling you bet.</li>
+          </ul>
+      <button type="button" name="button">Play!</button>
+        <ul class="deck">
+          <li>
+            <element class="card back">*</element>
+          </li>
+          <li>
+            <element class="card back">*</element>
+          </li>
+          <li>
+            <element class="card back">*</element>
+          </li>
+          <li>
+            <element class="card back">*</element>
+          </li>
+        </ul>
 
+        <span class="card rank-8 clubs">
+          <span class="rank">8</span>
+          <span class="suit">&clubs;</span>
+        </span>
+
+        <element class="card back">*</element>
+        <br>
+        <br>
+        <ul class="table">
+            <li>
+              <a class="card rank-q hearts" href="#">
+                <span class="rank">Q</span>
+                <span class="suit">&hearts;</span>
+              </a>
+            </li>
+            <li>
+              <a class="card rank-9 spades" href="#">
+                <span class="rank">9</span>
+                <span class="suit">&spades;</span>
+              </a>
+           </li>
+
+            <li><element class="card back">*</element></li>
+        </ul>
+        <br>
+        <br>
+      <button type="button" class="hitButton">Hit</button>
+      <button type="button" class="stayButton">Stay</button>
+      <button type="button" class="betButton">Bet</button>
+      <button type="button" class="shuffleButton">Shuffle Shoe</button>
+      <button type="button" class="playButton">Play Again</button>
+    </div>
+  </div>
   </body>
 </html>
