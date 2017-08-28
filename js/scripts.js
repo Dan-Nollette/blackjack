@@ -9,6 +9,13 @@ var suits = ["Spades", "Hearts", "Clubs", "Diamonds"];
   // BankRoll is the amount of money the player has available to wager.
 var playerBankRoll = 1000;
 
+  // The current shoe object in use.
+var currentShoe;
+  // The player's hand of cards
+var playerHand;
+  //
+var dealerHand;
+
   //The Card object has a rank and suit, just as a real playing card would. 'Shuffle score' is used to randomize the cards for shuffling. deckNumber tracks which deck the card cam from for multiple deck shoes. 'value' tracks the value of the card with aces counted as 11.
 function Card(rank, suit, value, number){
   this.rank = rank;
@@ -26,7 +33,11 @@ function IndividualHand(){
   this.isSoft = false;
   this.wager = 10;
 }
-
+var hitOrStay = function(hand){
+  for(; hand.score < 17;){
+    currentShoe.dealCard(hand);
+  }
+}
   // The shoe object represents all cards in the decks being played. remainingCards are the cards remaining to be dealt, dealtCards are those that have been dealt. redCard is the indicator for when a shuffle is required before the next round can be dealt. decks tracks the number of decks used to create this shoe.
 function Shoe(decks){
   this.decks = decks;
@@ -82,28 +93,18 @@ Shoe.prototype.dealRound = function(player, dealer){
 
 //FRONTEND SCRIPTS (user interface logic)
 $(document).ready(function(){
-  var playerHand;
-  var dealHand;
-  //scripts for when the player clicks the 'Hit' button
-  $("#hitButton").click(function(event){
-      event.preventDefault();
 
-      toppings = $(".pieOptions input:checkbox:checked").map(function(){
-        return $(this).val();
-      }).get();
-      $("#output").show();
-      $("#output").text(getPriceOutput(size, toppings));
+  //scripts for when the player clicks the 'Hit' button
+  $(".hitButton").click(function(event){
+      event.preventDefault();
+      playerHand(dealCard);
+      //output dealt card, indicate score, possible bust.
   });
   //scripts for when the player clicks the 'Stay' button
-  $("#stayButton").click(function(event){
+  $(".stayButton").click(function(event){
       event.preventDefault();
-      var size = $("#sizes").val();
-      var toppings = [];
-      toppings = $(".pieOptions input:checkbox:checked").map(function(){
-        return $(this).val();
-      }).get();
-      $("#output").show();
-      $("#output").text(getPriceOutput(size, toppings));
+      hitOrStay(dealerHand);
+      //userPlayer ends their turn. Trigger dealer Turn.
   });
   //scripts for when the player clicks the 'double' button
   // $("#doubleButton").click(function(event){
@@ -129,23 +130,18 @@ $(document).ready(function(){
   // });
 
   //scripts for when the player clicks the 'New Game' button
-  $("#newGameButton").click(function(event){
+  $(".newGameButton").click(function(event){
       event.preventDefault();
-      playerHand =  New IndividualHand();
-      dealerHand = New IndividualHand();
+      currentShoe = new Shoe(1);
+      playerHand =  new IndividualHand();
+      dealerHand = new IndividualHand();
       // unhide necessary fields.
       playerBankRoll = 1000;
-      New Shoe(4);
   });
   //scripts for when the player clicks the 'Shuffle' button. Note, this is only an option when the player is not in the middle of a hand.
-  $("#shuffleButton").click(function(event){
+  $(".shuffleButton").click(function(event){
       event.preventDefault();
-      var size = $("#sizes").val();
-      var toppings = [];
-      toppings = $(".pieOptions input:checkbox:checked").map(function(){
-        return $(this).val();
-      }).get();
-      $("#output").show();
-      $("#output").text(getPriceOutput(size, toppings));
+      currentShoe.shuffle();
+      //TO DO: output feedback to let user know the shoe is shuffled
   });
 });
