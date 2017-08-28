@@ -1,0 +1,58 @@
+.cards {
+  text-align: center;
+}
+
+#showCard {
+  margin-left: -2.5em;
+}
+
+.hitButton {
+  background-color: red;
+}
+
+.stayButton {
+  color: white;
+  background-color: blue;
+}
+
+.betButton {
+  background-color: yellow;
+}
+
+.shuffleButton {
+  color: white;
+  background-color: black;
+}
+
+.dealButton {
+
+}
+.betBox, p{
+  float: right;
+  color: white;
+}
+
+body {
+  background-image: url(https://wizardofodds.com/play/blackjack-v2/table.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.well {
+  margin-left: -150px;
+  font-size: 11px;
+  opacity: 0.7;
+  border-radius: 10px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
+}
+.actionButtons {
+  text-align: center;
+}
+
+.card.back {
+  background-size: 100%;
+}
