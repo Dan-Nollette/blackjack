@@ -31,6 +31,8 @@ function IndividualHand(){
 function Shoe(decks){
   this.decks = decks;
   this.remainingCards = [];
+  this.redCard = 26;
+  this.dealtCards = [];
   var cardsArray = this.remainingCards;
   for (var i = 0; i < this.decks; i++){
     suits.forEach(function(suit){
@@ -39,8 +41,6 @@ function Shoe(decks){
       })
     })
   }
-  this.redCard = 26;
-  this.dealtCards = [];
 }
 
   //Calling the Shoe.shuffle() method removes all cards from dealtCards and places them in remainingCards. It then randomizes the order of remainingCards.
@@ -82,11 +82,12 @@ Shoe.prototype.dealRound = function(player, dealer){
 
 //FRONTEND SCRIPTS (user interface logic)
 $(document).ready(function(){
+  var playerHand;
+  var dealHand;
   //scripts for when the player clicks the 'Hit' button
   $("#hitButton").click(function(event){
       event.preventDefault();
-      var size = $("#sizes").val();
-      var toppings = [];
+
       toppings = $(".pieOptions input:checkbox:checked").map(function(){
         return $(this).val();
       }).get();
@@ -130,8 +131,8 @@ $(document).ready(function(){
   //scripts for when the player clicks the 'New Game' button
   $("#newGameButton").click(function(event){
       event.preventDefault();
-      var playerHand =  New IndividualHand();
-      var dealerHand = New IndividualHand();
+      playerHand =  New IndividualHand();
+      dealerHand = New IndividualHand();
       // unhide necessary fields.
       playerBankRoll = 1000;
       New Shoe(4);
