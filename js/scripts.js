@@ -1,11 +1,11 @@
 //BACKEND SCRIPTS (business logic)
 
   //The ranks of cards in a deck and their corresponding values in blackjack.
-var ranks = [["Deuce", 2], ["Three", 3], ["Four", 4], ["Five", 5], ["Six", 6], ["Seven", 7], ["Eight", 8], ["Nine", 9], ["Ten", 10], ["Jack", 10], ["Queen", 10], ["King", 10], ["Ace", 11]];
+var ranks = [["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6], ["7", 7], ["8", 8], ["9", 9], ["10", 10], ["j", 10], ["q", 10], ["k", 10], ["a", 11]];
 
   //The suits of cards in a deck.
-var suits = ["Spades", "Hearts", "Clubs", "Diamonds"];
-
+var suits = [["spades", "♠"], ["hearts", "♥"], ["clubs", "♣"], ["diams", "♦"]];
+  //["♠", "♥", "♣", "♦"];
   // BankRoll is the amount of money the player has available to wager.
 var playerBankRoll = 1000;
 
@@ -13,13 +13,14 @@ var playerBankRoll = 1000;
 var currentShoe;
   // The player's hand of cards
 var playerHand;
-  //
+  // The Dealer's hand of cards
 var dealerHand;
 
   //The Card object has a rank and suit, just as a real playing card would. 'Shuffle score' is used to randomize the cards for shuffling. deckNumber tracks which deck the card cam from for multiple deck shoes. 'value' tracks the value of the card with aces counted as 11.
-function Card(rank, suit, value, number){
+function Card(rank, suit, suitSymbol, value, number){
   this.rank = rank;
   this.suit = suit;
+  this.suitSymbol = suitSymbol;
   this.value = value;
   this.deckNumber = number;
   this.shuffleScore;
@@ -28,16 +29,28 @@ function Card(rank, suit, value, number){
   // Individualshand contains an array cards, the score is their combined value, and the number of aces for tracking hard, vs. soft hands. 'Wager' is the number of points the player has bet on this round.
 function IndividualHand(){
   this.cards = [];
-  this.score = 0;
-  this.aces = 0
-  this.isSoft = false;
+  this.hardScore = 0;
+  this.softScore = 0;
   this.wager = 10;
 }
+
+  //checks if a hand is busted
+IndividualHand.prototype.isBust = function(){
+  if (this.hardScore > 21) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+  //determines whether the dealer will hit or stay
 var hitOrStay = function(hand){
-  for(; hand.score < 17;){
+  for(; hand.softScore < 17;){
     currentShoe.dealCard(hand);
   }
 }
+
+
   // The shoe object represents all cards in the decks being played. remainingCards are the cards remaining to be dealt, dealtCards are those that have been dealt. redCard is the indicator for when a shuffle is required before the next round can be dealt. decks tracks the number of decks used to create this shoe.
 function Shoe(decks){
   this.decks = decks;
@@ -48,7 +61,7 @@ function Shoe(decks){
   for (var i = 0; i < this.decks; i++){
     suits.forEach(function(suit){
       ranks.forEach(function(rank){
-        cardsArray.push(new Card(rank[0], suit, rank[1], i+1));
+        cardsArray.push(new Card(rank[0], suit[0], suit[1], rank[1], i+1));
       })
     })
   }
@@ -68,12 +81,12 @@ Shoe.prototype.shuffle = function(){
   });
 }
 
-  //This method takes a card from remaining cards and adds it to the dealtCards and the hand parameter's cards array, updating handScore as necessary.
+  //This method takes a card from remaining cards and adds it to the dealtCards and the hand parameter's cards array, updating hand.score as necessary.
 Shoe.prototype.dealCard = function(hand){
   var currentCard = this.remainingCards.pop();
   hand.cards.push(currentCard);
   this.dealtCards.push(currentCard);
-  hand.score = hand.score + currentCard.value;
+  hand.hardScore = hand.hardScore + currentCard.value;
 }
 
 //Deals two cards to the hand parameter
@@ -90,6 +103,24 @@ Shoe.prototype.dealRound = function(player, dealer){
   this.dealHand(player);
   this.dealHand(dealer);
 }
+
+// takes card as parameter and returns html tags to output for that card
+Card.prototype.toHTML = function(){
+  var rankToPresent = this.rank;
+  console.log(this.rank + "  " + rankToPresent);
+  if (this.rank ==='a' || this.rank ==='k' || this.rank ==='q' || this.rank ==='j') {
+    rankToPresent = this.rank.toUpperCase();
+  }
+  console.log(this.rank + "  " + rankToPresent);
+  var returnstring = "";
+  returnstring += "<li>"
+  returnstring += "\n\t<div class=\"card rank-" + this.rank + " " + this.suit + "\">";
+  returnstring += "\n\t\t<span class=\"rank\">" + rankToPresent + "</span>";
+  returnstring += "\n\t\t<span class=\"suit\">" + this.suitSymbol + "</span>";
+  returnstring += "\n\t</div>";
+  returnstring += "\n</li>"
+  return returnstring;
+};
 
 //FRONTEND SCRIPTS (user interface logic)
 $(document).ready(function(){
@@ -145,3 +176,18 @@ $(document).ready(function(){
       //TO DO: output feedback to let user know the shoe is shuffled
   });
 });
+
+
+
+// // <li>
+// //   <div class="card rank-a spades"><span class="rank">A</span><span class="suit">♠</span></div>
+// // </li>
+// <li>
+//           <div class="card rank-a diams"><span class="rank">A</span><span class="suit">♦</span></div>
+//         </li>
+//         <li>
+//         	<div class="card rank-a diamonds">
+//         		<span class="rank">a</span>
+//         		<span class="suit">♦</span>
+//         	</div>
+//         </li>
