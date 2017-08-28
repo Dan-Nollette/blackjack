@@ -20,6 +20,7 @@
             <h2>Rules of Blackjack</h2>
             <ul>
               <li>The goal of blackjack is to beat the dealer's hand without going over 21.</li>
+              <br>
               <li>Face cards are worth 10. Aces are worth 1 or 11, whichever makes a better hand.</li>
               <li>Each player starts with two cards, one of the dealer's cards is hidden until the end.</li>
               <li>To 'Hit' is to ask for another card. To 'Stand' is to hold your total and end your turn.</li>
@@ -53,22 +54,23 @@
                 </a>
               </div>
             </div>
-            <div class="row cards">
+            <div class="row">
               <div class="col-sm-12">
-                <ul class="deck cards">
-                  <li>
-                    <element class="card back">*</element>
-                  </li>
-                  <li>
-                    <element class="card back">*</element>
-                  </li>
-                  <li>
-                    <element class="card back">*</element>
-                  </li>
-                  <li>
-                    <element class="card back">*</element>
-                  </li>
-                </ul>
+                <div>
+                  <ul class="deck cards">
+                    <li><element class="card back">*</element></li>
+                    <li><element class="card back">*</element></li>
+                    <li><element class="card back">*</element></li>
+                    <li><element class="card back">*</element></li>
+                  </ul>
+                </div>
+                <div class="betBox well">
+                  <p>Make a wager!</p><br>
+                  <input type="radio"  name="bet" value=25 checked> $25<br>
+                  <input type="radio"  name="bet" value=50> $50<br>
+                  <input type="radio"  name="bet" value=75>$75<br>
+                  <input type="radio"  name="bet" value=100>$100<br>
+                </div>
               </div>
             </div>
             <div class="row cards">
@@ -86,13 +88,6 @@
 
             <div class="row">
               <div class="col-sm-12">
-                <p>Make a wager!</p><br>
-                <div class="betBox">
-                  <input type="radio"  name="bet" value=25 checked> $25<br>
-                  <input type="radio"  name="bet" value=50> $50<br>
-                  <input type="radio"  name="bet" value=75>$75<br>
-                  <input type="radio"  name="bet" value=100>$100<br>
-                </div>
                 <div class="actionButtons">
                   <button type="button" class="hitButton btn">Hit</button>
                   <button type="button" class="stayButton btn">Stay</button>
@@ -100,6 +95,12 @@
                   <button type="button" class="dealButton btn">Deal Hand</button>
                 </div>
               </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+
+              </div>
+
             </div>
 
 

@@ -29,7 +29,7 @@
 }
 .betBox, p{
   float: right;
-  color: white;
+  color: black;
 }
 
 body {
@@ -41,7 +41,7 @@ body {
 .well {
   margin-left: -150px;
   font-size: 11px;
-  opacity: 0.7;
+  opacity: 0.75;
   border-radius: 10px;
 }
 
@@ -55,4 +55,8 @@ ul {
 
 .card.back {
   background-size: 100%;
-}
+
+/*
+.playingCards ul.deck {
+    height: 0em;
+}*/
