@@ -36,6 +36,10 @@ body {
   background-image: url(https://wizardofodds.com/play/blackjack-v2/table.png);
   background-repeat: no-repeat;
   background-size: 100%;
+  /*background-attachment: fixed;*/
+
+
+
 }
 
 .well {
