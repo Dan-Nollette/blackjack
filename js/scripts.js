@@ -103,6 +103,7 @@ function Shoe(decks){
 
   //Calling the Shoe.shuffle() method removes all cards from dealtCards and places them in remainingCards. It then randomizes the order of remainingCards.
 Shoe.prototype.shuffle = function(){
+  alert("106")
   var remainingCardsPointer = this.remainingCards;
   this.dealtCards.forEach(function(card){
     remainingCardsPointer.push(card);
@@ -144,7 +145,8 @@ Shoe.prototype.dealHand = function(individual){
 
   //This deals cards to the player and dealer to begin the round, shuffling first if necessary.
 Shoe.prototype.dealRound = function(player, dealer, currentWager){
-  if (this.redcard >= this.remainingCards.length){
+  alert(this.remainingCards.length)
+  if (this.redCard >= this.remainingCards.length){
     this.shuffle();
   }
   this.dealHand(player);
@@ -153,20 +155,25 @@ Shoe.prototype.dealRound = function(player, dealer, currentWager){
   if(dealer.softScore === 21) {
     handInPLay = false;
     if (player.softScore === 21) {
-      $("#actionOutput").text("You have and dealer both have blackjack. It's a tie.");
+      alert("156");
+      return "You and dealer both have blackjack. It's a tie.";
       //output something about you and dealer both getting blackjack, "it's a tie"
     } else {
-      $("#actionOutput").text("The dealer has Blackjack. Sorry, You lose.");
+      alert("160");
       playerBankRoll -= playerHand.wager;
+      return "The dealer has Blackjack. Sorry, You lose.";
       //output something about dealer both getting blackjack, "sorry, you loose"
     }
   // display all cards dealt and prompt for starting  next hand
   }
   if (player.softScore === 21) {
+    alert("168");
     handInPLay = false;
-    $("#actionOutput").text("You have blackjack!, congratulations, you get paid 3-2 on your bet.");
     playerBankRoll += (playerHand.wager * 1.5);
+    return "You have blackjack!, congratulations, you get paid 3-2 on your bet."
     //output something about player getting blackjack, "Blackjack! you get paid 2-1!"
+  } else {
+    return "You have " + player.softScore +" and the dealer shows a " + dealer.cards[0].rank + ". click hit or stay."
   }
   //display player's cards, and a little message about the current score. prompt action.
 }
@@ -194,12 +201,12 @@ $(document).ready(function(){
         $("#playerHand").text("");
         $("#dealerHand").text("");
         var currentWager = parseInt($('input[name="bet"]:checked').val());
-        currentShoe.dealRound(playerHand, dealerHand, currentWager);
+        var tempString = currentShoe.dealRound(playerHand, dealerHand, currentWager);
         $("#dealerHand").append("<li><element class=\"card back\">*</element></li>");
         $("#dealerHand").append(dealerHand.cards[0].toHTML());
         $("#playerHand").append(playerHand.cards[0].toHTML());
         $("#playerHand").append(playerHand.cards[1].toHTML());
-        $("#actionOutput").text("You have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
+        $("#actionOutput").text(tempString);// "You have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
       } else {
         alert("There is currently a hand in play. You can't deal another until this one is over.");
       }
@@ -273,6 +280,9 @@ $(document).ready(function(){
   //scripts for when the player clicks the 'New Game' button
   $(".playButton").click(function(event){
     event.preventDefault();
+    $("#playerHand").text("");
+    $("#dealerHand").text("");
+    handInPLay = false;
     gameInitialized = true;
     currentShoe = new Shoe(1);
     playerHand =  new IndividualHand();
@@ -295,7 +305,7 @@ $(document).ready(function(){
         alert("There is currently a hand in play. You can't shuffle the deck until this hand is over.");
       }
     } else {
-      alert("You can't do that until you start the game. click the Play1 button to start.");
+      alert("You can't do that until you start the game. click the Play! button to start.");
     }
   });
 });
