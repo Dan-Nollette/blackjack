@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,32 +14,30 @@
 
     </div>
     <div class="container">
-      <div class="playingCards fourColours|faceImages|simpleCards|inText|rotateHand">
-
+      <div class="playingCards simpleCards">
         <div class="row">
           <div class="col-sm-3 well">
             <h2>Rules of Blackjack</h2>
             <ul>
-              <li>The goal of blackjack is to beat the dealer's hand without going over 21.</li>
-              <br>
+              <li><strong>The goal of blackjack is to beat the dealer's hand without going over 21.</strong></li>
               <li>Face cards are worth 10. Aces are worth 1 or 11, whichever makes a better hand.</li>
-              <li>Each player starts with two cards, one of the dealer's cards is hidden until the end.</li>
+              <li><strong>Each player starts with two cards, one of the dealer's cards is hidden until the end.</strong></li>
               <li>To 'Hit' is to ask for another card. To 'Stand' is to hold your total and end your turn.</li>
-              <li>If you go over 21 you bust, and the dealer wins regardless of the dealer's hand.</li>
+              <li><strong>If you go over 21 you bust, and the dealer wins regardless of the dealer's hand.</strong></li>
               <li>If you are dealt 21 from the start (Ace & 10), you got a blackjack.</li>
-              <li>Dealer will hit until his/her cards total 17.</li>
+              <li><strong>Dealer will hit until his/her cards total 17.</strong></li>
               <li>Doubling is like a hit, only the bet is doubled and you only get one more card.</li>
-              <li>Split can be done when you have two of the same card - the pair is split into two hands.</li>
+              <li><strong>Split can be done when you have two of the same card - the pair is split into two hands.</strong></li>
               <li>Splitting also doubles the bet, because each new hand is worth the original bet.</li>
-              <li>You can only double/split on the first move, or first move of a hand created by a split.</li>
+              <li><strong>You can only double/split on the first move, or first move of a hand created by a split.</strong></li>
               <li>You cannot play on two aces after they are split.</li>
-              <li>You can double on a hand resulting from a split, tripling or quadrupling you bet.</li>
+              <li><strong>You can double on a hand resulting from a split, tripling or quadrupling you bet.</strong></li>
             </ul>
           </div>
           <div class="col-sm-9">
 
             <div class="row cards ">
-              <div class="col-sm-12">
+              <div class="col-sm-9" id="dealerHand">
                 <element class="card back">*</element>
                 <!-- <a class="card rank-9 spades" href="#">
                   <span class="rank">9</span>
@@ -52,11 +51,7 @@
                   <span class="rank">Q</span>
                   <span class="suit">&hearts;</span>
                 </a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <div>
+                <div id="dealerDeck">
                   <ul class="deck cards">
                     <li><element class="card back">*</element></li>
                     <li><element class="card back">*</element></li>
@@ -64,6 +59,11 @@
                     <li><element class="card back">*</element></li>
                   </ul>
                 </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-sm-9">
                 <div class="betBox well">
                   <p>Make a wager!</p><br>
                   <input type="radio"  name="bet" value=25 checked> $25<br>
@@ -74,7 +74,7 @@
               </div>
             </div>
             <div class="row cards">
-              <div class="col-sm-12">
+              <div class="col-sm-9" id="playerHand">
                 <a class="card rank-q hearts" href="#">
                   <span class="rank">Q</span>
                   <span class="suit">&hearts;</span>
@@ -87,7 +87,7 @@
             </div>
 
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-9">
                 <div class="actionButtons">
                   <button type="button" class="hitButton btn">Hit</button>
                   <button type="button" class="stayButton btn">Stay</button>
@@ -97,19 +97,10 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12">
-
+              <div class="col-sm-9">
+                <button type="button" class="playButton btn">Play!</button>
               </div>
-
             </div>
-
-
-
-            <button type="button" class="playButton btn">Play!</button>
-
-
-
-
           </div>
         </div>
       </div>

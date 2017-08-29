@@ -54,7 +54,15 @@
     /*background-image: -webkit-gradient(radial, center center, 20, center center, 80, from(#3c3), color-stop(0.4, #363), to(#030));*/
     /* yes, it's intentional that Mozilla, Webkit, Opera and IE all will get different backgrounds ... why not? :) */
 }
-
+.playingCards .card.backNew {
+    text-indent:  -4000px;
+    background-color: white;
+    /*background-repeat: no-repeat;*/
+    background-image: url(https://static.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg); /* image is "Pattern 069" from http://www.squidfingers.com/patterns/ */
+    background-image: -moz-repeating-linear-gradient(34% 6% 135deg,#0F1E59, #75A1BF, #3E3E63 50%);
+    /*background-image: -webkit-gradient(radial, center center, 20, center center, 80, from(#3c3), color-stop(0.4, #363), to(#030));*/
+    /* yes, it's intentional that Mozilla, Webkit, Opera and IE all will get different backgrounds ... why not? :) */
+}
 /* suit colours
 ********************************************************************/
 
@@ -126,7 +134,7 @@
 }
 
 /* different rank letters for different languages */
-.playingCards .card .rank:after,
+/*.playingCards .card .rank:after,
 .playingCards .card.joker .rank:before {
     position: absolute;
     top: .25em;
@@ -145,10 +153,10 @@
 }
 [lang=fr] .playingCards .card.rank-k .rank:after {
     content: "R";
-}
+}*/
 
 /* joker (top left symbol) */
-.playingCards .card.joker .rank {
+/*.playingCards .card.joker .rank {
     position: absolute;
 }
 .playingCards .card.joker .rank:before {
@@ -158,14 +166,14 @@
 }
 .playingCards .card.joker .suit {
     text-indent: -9999px;
-}
+}*/
 
 /* inner multiple suits */
 .playingCards .card .suit:after {
     display: block;
     margin-top: -.8em;
     text-align: center;
-    /*white-space: pre;*/
+    white-space: pre;
     line-height: .9;
     font-size: 1.3em;
     word-spacing: -.05em;
