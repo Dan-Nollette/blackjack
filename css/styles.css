@@ -85,15 +85,12 @@ ul {
 #dealerDeck {
   float: left;
 }
-/*#dealerHand, #playerHand {
-  margin-bottom: -150px;
-}*/
 
 
 
-/*#playerHand, #dealerHand {
+#playerHand, #dealerHand, .actionButtons {
   display: none;
-}*/
+}
 
 /*
 .playingCards ul.deck {
