@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,8 +14,7 @@
 
     </div>
     <div class="container">
-      <div class="playingCards fourColours|faceImages|simpleCards|inText|rotateHand">
-
+      <div class="playingCards simpleCards">
         <div class="row">
           <div class="col-sm-3 well">
             <h2>Rules of Blackjack</h2>
@@ -38,7 +38,7 @@
           <div class="col-sm-9">
 
             <div class="row cards ">
-              <div class="col-sm-12">
+              <div class="col-sm-9">
                 <element class="card back">*</element>
                 <!-- <a class="card rank-9 spades" href="#">
                   <span class="rank">9</span>
@@ -52,11 +52,7 @@
                   <span class="rank">Q</span>
                   <span class="suit">&hearts;</span>
                 </a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <div>
+                <div id="dealerDeck">
                   <ul class="deck cards">
                     <li><element class="card back">*</element></li>
                     <li><element class="card back">*</element></li>
@@ -64,6 +60,11 @@
                     <li><element class="card back">*</element></li>
                   </ul>
                 </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-sm-9">
                 <div class="betBox well">
                   <p>Make a wager!</p><br>
                   <input type="radio"  name="bet" value=25 checked> $25<br>
@@ -74,7 +75,7 @@
               </div>
             </div>
             <div class="row cards">
-              <div class="col-sm-12">
+              <div class="col-sm-9">
                 <a class="card rank-q hearts" href="#">
                   <span class="rank">Q</span>
                   <span class="suit">&hearts;</span>
@@ -87,7 +88,7 @@
             </div>
 
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-9">
                 <div class="actionButtons">
                   <button type="button" class="hitButton btn">Hit</button>
                   <button type="button" class="stayButton btn">Stay</button>
@@ -97,19 +98,10 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12">
-
+              <div class="col-sm-9">
+                <button type="button" class="playButton btn">Play!</button>
               </div>
-
             </div>
-
-
-
-            <button type="button" class="playButton btn">Play!</button>
-
-
-
-
           </div>
         </div>
       </div>

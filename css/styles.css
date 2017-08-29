@@ -1,4 +1,12 @@
+
+.container{
+
+}
 .cards {
+  text-align: center;
+}
+
+h1  {
   text-align: center;
 }
 
@@ -24,9 +32,21 @@
   background-color: black;
 }
 
+/*.startGame, .btn-block {
+  text-align: center;
+  background-color: transparent;
+  color: red;
+  padding: 18px 28px;
+  font-size: 50px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: -25px;
+}*/
+
 .dealButton {
 
 }
+
 .betBox, p{
   float: right;
   color: black;
@@ -37,13 +57,10 @@ body {
   background-repeat: no-repeat;
   background-size: 100%;
   /*background-attachment: fixed;*/
-
-
-
 }
 
 .well {
-  margin-left: -150px;
+  /*margin-left: -50px;*/
   font-size: 11px;
   opacity: 0.75;
   border-radius: 10px;
@@ -53,12 +70,30 @@ ul {
   list-style: none;
   padding-left: 0px;
 }
+
 .actionButtons {
   text-align: center;
 }
 
 .card.back {
   background-size: 100%;
+}
+.card.backNew{
+  background-size: 100%;
+}
+
+#dealerDeck {
+  float: left;
+}
+/*#dealerHand, #playerHand {
+  margin-bottom: -150px;
+}*/
+
+
+
+/*#playerHand, #dealerHand {
+  display: none;
+}*/
 
 /*
 .playingCards ul.deck {
