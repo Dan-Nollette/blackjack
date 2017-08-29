@@ -300,6 +300,7 @@ $(document).ready(function(){
   //scripts for when the player clicks the 'New Game' button
   $(".playButton").click(function(event){
     event.preventDefault();
+    alert("play")
     $("#playerHandTarget").text("");
     $("#dealerHand").text("");
     handInPLay = false;
@@ -320,7 +321,6 @@ $(document).ready(function(){
         $("#playerHandTarget").text("");
         $("#dealerHand").text("");
         $("#actionOutput").text("The shoe is shuffled.");
-        //TO DO: output feedback to let user know the shoe is shuffled
       } else {
         alert("There is currently a hand in play. You can't shuffle the deck until this hand is over.");
       }
