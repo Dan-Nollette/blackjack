@@ -53,16 +53,21 @@ var hitOrStay = function(hand){
 var evaluateRound = function(dealerHand, playerHand) {
   var dealerFinalScore = dealerHand.finalScore();
   var playerFinalScore = playerHand.finalScore();
-  if (dealer.isBust()) {
+  if (dealerHand.isBust()) {
+    playerBankRoll += playerHand.wager;
+    $("#actionOutput").append("Dealer is bust with a score of " + dealerHand.hardScore + ". You win! Your bankroll is now " + playerBankRoll);
     //return output for dealer bust. "Dealer is bust, you win!"
     //add wager to bankroll
-  } else if (playerFinalScore < dealerFinalScore){
-    //return output for player beats dealer "congrats, you win"
+  } else if (playerFinalScore > dealerFinalScore){
+    playerBankRoll += playerHand.wager;
+    $("#actionOutput").append("You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " Congrats, you win. Your bankroll is now " + playerBankRoll);
+    //return output for player beats dealer "
     //add wager to bankroll
   } else if (playerFinalScore === dealerFinalScore) {
-    //return output for tie "You pushed"
-  } else if (playerFinalScore > dealerFinalScore) {
-    //add wager to bankroll
+    $("#actionOutput").append("You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " it's a tie. Your bankroll is now " + playerBankRoll);
+  } else if (playerFinalScore < dealerFinalScore) {
+    playerBankRoll -= playerHand.wager;
+    $("#actionOutput").append("You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " Sorry, you loose. Your bankroll is now " + playerBankRoll);
     //return output for dealer beats player "sorry, you loose."
   }
 }
@@ -133,12 +138,13 @@ Shoe.prototype.dealHand = function(individual){
 }
 
   //This deals cards to the player and dealer to begin the round, shuffling first if necessary.
-Shoe.prototype.dealRound = function(player, dealer){
+Shoe.prototype.dealRound = function(player, dealer, currentWager){
   if (this.redcard >= this.remainingCards.length){
     this.shuffle();
   }
   this.dealHand(player);
   this.dealHand(dealer);
+  player.wager = currentWager;
   if(dealer.softScore === 21) {
     if (player.softScore === 21) {
       //output something about you and dealer both getting blackjack, "it's a tie"
@@ -170,25 +176,30 @@ $(document).ready(function(){
 
   $(".dealButton").click(function(event){
     event.preventDefault();
-    currentShoe.dealRound(playerHand, dealerHand);
+    var currentWager = parseInt($('input[name="bet"]:checked').val());
+    currentShoe.dealRound(playerHand, dealerHand, currentWager);
+    $("#actionOutput").text("you have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
   });
 
   //scripts for when the player clicks the 'Hit' button
   $(".hitButton").click(function(event){
       event.preventDefault();
       currentShoe.dealCard(playerHand);
+      $("#actionOutput").text("You took a hit. you now have" + playerHand.softScore);
       //output dealt card, indicate score.
       if (playerHand.isBust()){
+        $("#actionOutput").append("sorry, you busted out");
         //player Bust output
         //prompt beginning of new hand.
       } else {
-        //prompt next player action
+        $("#actionOutput").append("click hit or stay");
       }
   });
 
   //scripts for when the player clicks the 'Stay' button
   $(".stayButton").click(function(event){
       event.preventDefault();
+      $("#actionOutput").text("you stay on " + playerHand.softScore);
       //output something about the player standing. Maybe wait for user input before continueing.
       hitOrStay(dealerHand);
       evaluateRound(dealerHand, playerHand,);
@@ -226,11 +237,14 @@ $(document).ready(function(){
       dealerHand = new IndividualHand();
       // unhide necessary fields.
       playerBankRoll = 1000;
+      $("#actionOutput").text("The shoe is shuffled and a new game is ready.");
+
   });
   //scripts for when the player clicks the 'Shuffle' button. Note, this is only an option when the player is not in the middle of a hand.
   $(".shuffleButton").click(function(event){
       event.preventDefault();
       currentShoe.shuffle();
+      $("#actionOutput").text("The shoe is shuffled.");
       //TO DO: output feedback to let user know the shoe is shuffled
   });
 });
