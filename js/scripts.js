@@ -47,6 +47,7 @@ IndividualHand.prototype.isBust = function(){
 var hitOrStay = function(hand){
   for(; hand.hardScore < 17 && hand.softScore < 17;){
     currentShoe.dealCard(hand);
+    $("#dealerHand").append(hand.cards[hand.cards.length -1].toHTML());
   }
 }
 
@@ -60,14 +61,14 @@ var evaluateRound = function(dealerHand, playerHand) {
     //add wager to bankroll
   } else if (playerFinalScore > dealerFinalScore){
     playerBankRoll += playerHand.wager;
-    $("#actionOutput").append("You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " Congrats, you win. Your bankroll is now " + playerBankRoll);
+    $("#actionOutput").append(". You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " Congrats, you win. Your bankroll is now " + playerBankRoll);
     //return output for player beats dealer "
     //add wager to bankroll
   } else if (playerFinalScore === dealerFinalScore) {
-    $("#actionOutput").append("You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " it's a tie. Your bankroll is now " + playerBankRoll);
+    $("#actionOutput").append(". You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " it's a tie. Your bankroll is now " + playerBankRoll);
   } else if (playerFinalScore < dealerFinalScore) {
     playerBankRoll -= playerHand.wager;
-    $("#actionOutput").append("You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " Sorry, you loose. Your bankroll is now " + playerBankRoll);
+    $("#actionOutput").append(". You have " + playerFinalScore + " and the dealer has " + dealerFinalScore + " Sorry, you loose. Your bankroll is now " + playerBankRoll);
     //return output for dealer beats player "sorry, you loose."
   }
 }
@@ -101,7 +102,7 @@ function Shoe(decks){
 Shoe.prototype.shuffle = function(){
   var remainingCardsPointer = this.remainingCards;
   this.dealtCards.forEach(function(card){
-    this.remainingCards.push(card);
+    remainingCardsPointer.push(card);
   });
   this.dealtCards = [];
   this.remainingCards.forEach(function(card){
@@ -148,13 +149,16 @@ Shoe.prototype.dealRound = function(player, dealer, currentWager){
   player.wager = currentWager;
   if(dealer.softScore === 21) {
     if (player.softScore === 21) {
+      $("#actionOutput").text("You have and dealer both have blackjack. It's a tie.");
       //output something about you and dealer both getting blackjack, "it's a tie"
     } else {
+      $("#actionOutput").text("The dealer has Blackjack. Sorry, You lose.");
       //output something about dealer both getting blackjack, "sorry, you loose"
     }
   // display all cards dealt and prompt for starting  next hand
   }
   if (player.softScore === 21) {
+    $("#actionOutput").text("You have blackjack!, congratulations, you get paid 3-2 on your bet.");
     //output something about player getting blackjack, "Blackjack! you get paid 2-1!"
   }
   //display player's cards, and a little message about the current score. prompt action.
@@ -177,33 +181,40 @@ $(document).ready(function(){
 
   $(".dealButton").click(function(event){
     event.preventDefault();
+    $("#playerHand").text("");
+    $("#dealerHand").text("");
     var currentWager = parseInt($('input[name="bet"]:checked').val());
     currentShoe.dealRound(playerHand, dealerHand, currentWager);
     $("#dealerHand").append("<li><element class=\"card back\">*</element></li>");
     $("#dealerHand").append(dealerHand.cards[0].toHTML());
     $("#playerHand").append(playerHand.cards[0].toHTML());
     $("#playerHand").append(playerHand.cards[1].toHTML());
-    $("#actionOutput").text("you have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
+    $("#actionOutput").text("You have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
   });
 
   //scripts for when the player clicks the 'Hit' button
   $(".hitButton").click(function(event){
       event.preventDefault();
       currentShoe.dealCard(playerHand);
-      $("#actionOutput").text("You took a hit. you now have" + playerHand.softScore);
+      $("#playerHand").append(playerHand.cards[playerHand.cards.length -1].toHTML());
+      $("#actionOutput").text("You took a hit. you now have " + playerHand.softScore);
       //output dealt card, indicate score.
       if (playerHand.isBust()){
-        $("#actionOutput").append("sorry, you busted out");
+        $("#actionOutput").append(". Sorry, you busted out");
         //player Bust output
         //prompt beginning of new hand.
       } else {
-        $("#actionOutput").append("click hit or stay");
+        $("#actionOutput").append(". Click hit or stay");
       }
   });
 
   //scripts for when the player clicks the 'Stay' button
   $(".stayButton").click(function(event){
       event.preventDefault();
+      $("#dealerHand").text("");
+      $("#dealerHand").append(dealerHand.cards[0].toHTML());
+      $("#dealerHand").append(dealerHand.cards[1].toHTML());
+
       $("#actionOutput").text("you stay on " + playerHand.softScore);
       //output something about the player standing. Maybe wait for user input before continueing.
       hitOrStay(dealerHand);
