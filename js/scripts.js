@@ -172,7 +172,7 @@ Shoe.prototype.dealRound = function(player, dealer, currentWager){
     result[0] = "You have blackjack!, congratulations, you get paid 3-2 on your bet."
     //output something about player getting blackjack, "Blackjack! you get paid 2-1!"
     } else {
-    result[0] = "You have " + player.softScore +" and the dealer shows a " + dealer.cards[0].rankName + ". Click hit or stay."
+    result[0] = "You have " + player.softScore +" and the dealer shows a " + dealer.cards[1].rankName + ". Click hit or stay."
     result[1] = "<li><element class=\"card back\">*</element></li>";
     result[2] = dealer.cards[1].toHTML();
   }
