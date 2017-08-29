@@ -1,8 +1,10 @@
 //BACKEND SCRIPTS (business logic)
 
+gameInitialized = false;
   //The ranks of cards in a deck and their corresponding values in blackjack.
 var ranks = [["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6], ["7", 7], ["8", 8], ["9", 9], ["10", 10], ["j", 10], ["q", 10], ["k", 10], ["a", 1]];
-
+  //Tracks whether there is currently a hand being played
+var handInPLay = false;
   //The suits of cards in a deck.
 var suits = [["spades", "♠"], ["hearts", "♥"], ["clubs", "♣"], ["diams", "♦"]];
   // BankRoll is the amount of money the player has available to wager.
@@ -52,11 +54,12 @@ var hitOrStay = function(hand){
 }
 
 var evaluateRound = function(dealerHand, playerHand) {
+  handInPLay = false;
   var dealerFinalScore = dealerHand.finalScore();
   var playerFinalScore = playerHand.finalScore();
   if (dealerHand.isBust()) {
     playerBankRoll += playerHand.wager;
-    $("#actionOutput").append("Dealer is bust with a score of " + dealerHand.hardScore + ". You win! Your bankroll is now " + playerBankRoll);
+    $("#actionOutput").append(". Dealer is bust with a score of " + dealerHand.hardScore + ". You win! Your bankroll is now " + playerBankRoll);
     //return output for dealer bust. "Dealer is bust, you win!"
     //add wager to bankroll
   } else if (playerFinalScore > dealerFinalScore){
@@ -148,17 +151,21 @@ Shoe.prototype.dealRound = function(player, dealer, currentWager){
   this.dealHand(dealer);
   player.wager = currentWager;
   if(dealer.softScore === 21) {
+    handInPLay = false;
     if (player.softScore === 21) {
       $("#actionOutput").text("You have and dealer both have blackjack. It's a tie.");
       //output something about you and dealer both getting blackjack, "it's a tie"
     } else {
       $("#actionOutput").text("The dealer has Blackjack. Sorry, You lose.");
+      playerBankRoll -= playerHand.wager;
       //output something about dealer both getting blackjack, "sorry, you loose"
     }
   // display all cards dealt and prompt for starting  next hand
   }
   if (player.softScore === 21) {
+    handInPLay = false;
     $("#actionOutput").text("You have blackjack!, congratulations, you get paid 3-2 on your bet.");
+    playerBankRoll += (playerHand.wager * 1.5);
     //output something about player getting blackjack, "Blackjack! you get paid 2-1!"
   }
   //display player's cards, and a little message about the current score. prompt action.
@@ -181,45 +188,63 @@ $(document).ready(function(){
 
   $(".dealButton").click(function(event){
     event.preventDefault();
-    $("#playerHand").text("");
-    $("#dealerHand").text("");
-    var currentWager = parseInt($('input[name="bet"]:checked').val());
-    currentShoe.dealRound(playerHand, dealerHand, currentWager);
-    $("#dealerHand").append("<li><element class=\"card back\">*</element></li>");
-    $("#dealerHand").append(dealerHand.cards[0].toHTML());
-    $("#playerHand").append(playerHand.cards[0].toHTML());
-    $("#playerHand").append(playerHand.cards[1].toHTML());
-    $("#actionOutput").text("You have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
+    if(gameInitialized) {
+      if(!handInPLay){
+        handInPLay = true;
+        $("#playerHand").text("");
+        $("#dealerHand").text("");
+        var currentWager = parseInt($('input[name="bet"]:checked').val());
+        currentShoe.dealRound(playerHand, dealerHand, currentWager);
+        $("#dealerHand").append("<li><element class=\"card back\">*</element></li>");
+        $("#dealerHand").append(dealerHand.cards[0].toHTML());
+        $("#playerHand").append(playerHand.cards[0].toHTML());
+        $("#playerHand").append(playerHand.cards[1].toHTML());
+        $("#actionOutput").text("You have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
+      } else {
+        alert("There is currently a hand in play. You can't deal another until this one is over.");
+      }
+    }
+    else {
+      alert("You can't do that until you start the game. click the Play1 button to start.");
+    }
   });
 
   //scripts for when the player clicks the 'Hit' button
   $(".hitButton").click(function(event){
-      event.preventDefault();
+    event.preventDefault();
+    if(handInPLay){
       currentShoe.dealCard(playerHand);
       $("#playerHand").append(playerHand.cards[playerHand.cards.length -1].toHTML());
-      $("#actionOutput").text("You took a hit. you now have " + playerHand.softScore);
+      $("#actionOutput").text("You took a hit. You now have " + playerHand.softScore);
       //output dealt card, indicate score.
       if (playerHand.isBust()){
         $("#actionOutput").append(". Sorry, you busted out");
+        playerBankRoll -= playerHand.wager;
+        handInPLay = false;
         //player Bust output
         //prompt beginning of new hand.
       } else {
         $("#actionOutput").append(". Click hit or stay");
       }
+    } else {
+        alert("There is currently no hand in play. You can't take a hit until you deal a hand");
+    }
   });
 
   //scripts for when the player clicks the 'Stay' button
   $(".stayButton").click(function(event){
       event.preventDefault();
-      $("#dealerHand").text("");
-      $("#dealerHand").append(dealerHand.cards[0].toHTML());
-      $("#dealerHand").append(dealerHand.cards[1].toHTML());
-
-      $("#actionOutput").text("you stay on " + playerHand.softScore);
-      //output something about the player standing. Maybe wait for user input before continueing.
-      hitOrStay(dealerHand);
-      evaluateRound(dealerHand, playerHand,);
-
+      if(handInPLay){
+        $("#dealerHand").text("");
+        $("#dealerHand").append(dealerHand.cards[0].toHTML());
+        $("#dealerHand").append(dealerHand.cards[1].toHTML());
+        $("#actionOutput").text("You stay on " + playerHand.softScore);
+        //output something about the player standing. Maybe wait for user input before continueing.
+        hitOrStay(dealerHand);
+        evaluateRound(dealerHand, playerHand,);
+      } else {
+          alert("There is currently no hand in play. You can't take stay until you deal a hand");
+      }
       //userPlayer ends their turn. Trigger dealer Turn.
   });
   //scripts for when the player clicks the 'double' button
@@ -247,20 +272,30 @@ $(document).ready(function(){
 
   //scripts for when the player clicks the 'New Game' button
   $(".playButton").click(function(event){
-      event.preventDefault();
-      currentShoe = new Shoe(1);
-      playerHand =  new IndividualHand();
-      dealerHand = new IndividualHand();
-      // unhide necessary fields.
-      playerBankRoll = 1000;
-      $("#actionOutput").text("The shoe is shuffled and a new game is ready.");
-
+    event.preventDefault();
+    gameInitialized = true;
+    currentShoe = new Shoe(1);
+    playerHand =  new IndividualHand();
+    dealerHand = new IndividualHand();
+    // unhide necessary fields.
+    playerBankRoll = 1000;
+    $("#actionOutput").text("The shoe is shuffled and a new game is ready.");
   });
   //scripts for when the player clicks the 'Shuffle' button. Note, this is only an option when the player is not in the middle of a hand.
   $(".shuffleButton").click(function(event){
-      event.preventDefault();
-      currentShoe.shuffle();
-      $("#actionOutput").text("The shoe is shuffled.");
-      //TO DO: output feedback to let user know the shoe is shuffled
+    event.preventDefault();
+    if(gameInitialized) {
+      if(!handInPLay){
+        currentShoe.shuffle();
+        $("#playerHand").text("");
+        $("#dealerHand").text("");
+        $("#actionOutput").text("The shoe is shuffled.");
+        //TO DO: output feedback to let user know the shoe is shuffled
+      } else {
+        alert("There is currently a hand in play. You can't shuffle the deck until this hand is over.");
+      }
+    } else {
+      alert("You can't do that until you start the game. click the Play1 button to start.");
+    }
   });
 });
