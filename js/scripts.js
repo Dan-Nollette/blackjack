@@ -99,6 +99,7 @@ function Shoe(decks){
 
   //Calling the Shoe.shuffle() method removes all cards from dealtCards and places them in remainingCards. It then randomizes the order of remainingCards.
 Shoe.prototype.shuffle = function(){
+  var remainingCardsPointer = this.remainingCards;
   this.dealtCards.forEach(function(card){
     this.remainingCards.push(card);
   });
@@ -178,6 +179,10 @@ $(document).ready(function(){
     event.preventDefault();
     var currentWager = parseInt($('input[name="bet"]:checked').val());
     currentShoe.dealRound(playerHand, dealerHand, currentWager);
+    $("#dealerHand").append("<li><element class=\"card back\">*</element></li>");
+    $("#dealerHand").append(dealerHand.cards[0].toHTML());
+    $("#playerHand").append(playerHand.cards[0].toHTML());
+    $("#playerHand").append(playerHand.cards[1].toHTML());
     $("#actionOutput").text("you have " + playerHand.softScore +" and the dealer shows a " + dealerHand.cards[0].rank + ". click hit or stay.");
   });
 
